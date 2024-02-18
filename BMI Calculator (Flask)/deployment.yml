@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: bmicalculator-deployment
+spec:
+  replicas: 2  # Number of desired replicas
+  selector:
+    matchLabels:
+      app: bmicalculator
+  template:
+    metadata:
+      labels:
+        app: bmicalculator
+    spec:
+      containers:
+      - name: bmicalculator
+        image: rameshkumarverma/bmicalculator
+        ports:
+        - containerPort: 5000

@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: batteryindicator-deployment
+spec:
+  replicas: 2  # Number of desired replicas
+  selector:
+    matchLabels:
+      app: batteryindicator
+  template:
+    metadata:
+      labels:
+        app: batteryindicator
+    spec:
+      containers:
+      - name: batteryindicator
+        image: rameshkumarverma/batteryindicator
+        ports:
+        - containerPort: 80

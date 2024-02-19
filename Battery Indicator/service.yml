@@ -10,6 +10,6 @@ spec:
     app: batteryindicator
   ports:
     - protocol: TCP
-      port: 80  # Port exposed by the service externally (outside the cluster)
-      targetPort: 8080  # Port your application listens on inside the pods
-  type: batteryindicator
+      port: 8080  # Port exposed by the service externally (outside the cluster)
+      targetPort: 80  # Port your application listens on inside the pods
+  type: LoadBalancer

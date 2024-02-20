@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: artgallery-deployment
+spec:
+  replicas: 2  # Number of desired replicas
+  selector:
+    matchLabels:
+      app: artgallery
+  template:
+    metadata:
+      labels:
+        app: artgallery
+    spec:
+      containers:
+      - name: artgallery
+        image: rameshkumarverma/artgallery
+        ports:
+        - containerPort: 80

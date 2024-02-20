@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: architecture-website-deployment
+spec:
+  replicas: 2  # Number of desired replicas
+  selector:
+    matchLabels:
+      app: architecture-website
+  template:
+    metadata:
+      labels:
+        app: architecture-website
+    spec:
+      containers:
+      - name: architecture-website
+        image: rameshkumarverma/architecture-website
+        ports:
+        - containerPort: 80

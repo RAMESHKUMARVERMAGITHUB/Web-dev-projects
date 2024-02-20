@@ -1,0 +1,110 @@
+pipeline{
+    agent any
+    // tools{
+    //     jdk 'jdk17'
+    //     nodejs 'node16'
+    // }
+    environment {
+        SCANNER_HOME=tool 'sonar-scanner'
+    }
+    stages {
+        stage('clean workspace'){
+            steps{
+                cleanWs()
+            }
+        }
+        stage('Checkout from Git'){
+            steps{
+                git branch: 'main', url: 'https://github.com/rameshkumarvermagithub/Web-dev-projects.git'
+            }
+        }
+        stage("Sonarqube Analysis "){
+            steps{
+              dir('Art-Gallery') {
+                withSonarQubeEnv('sonar-server') {
+                    sh ''' $SCANNER_HOME/bin/sonar-scanner -Dsonar.projectName=artgallery \
+                    -Dsonar.projectKey=artgallery'''
+                }
+              }
+            }
+        }
+        stage("quality gate"){
+           steps {
+                script {
+                  dir('Art-Gallery') {
+                    waitForQualityGate abortPipeline: false, credentialsId: 'sonar'
+                }
+                }
+            }
+        }
+        // stage('Install Dependencies') {
+        //     steps {
+        //         sh "npm install"
+        //     }
+        // }
+        stage('OWASP FS SCAN') {
+            steps {
+              dir('Art-Gallery') {
+                dependencyCheck additionalArguments: '--scan ./ --disableYarnAudit --disableNodeAudit', odcInstallation: 'DP-Check'
+                dependencyCheckPublisher pattern: '**/dependency-check-report.xml'
+            }
+            }
+        }
+         stage('TRIVY FS SCAN') {
+            steps {
+              dir('Art-Gallery') {
+                sh "trivy fs . > trivyfs.txt"
+            }
+            }
+        }
+        stage("Docker Build & Push"){
+            steps{
+                script{
+                  dir('Art-Gallery') {
+                   withDockerRegistry(credentialsId: 'docker', toolName: 'docker'){
+                       sh "docker build -t rameshkumarverma/artgallery ."
+                       // sh "docker tag artgallery rameshkumarverma/artgallery:latest"
+                       sh "docker push rameshkumarverma/artgallery:latest"
+                    }
+                  }
+                }
+            }
+        }
+        stage("TRIVY"){
+            steps{
+              dir('Art-Gallery') {
+                sh "trivy image rameshkumarverma/artgallery:latest > trivyimage.txt"
+            }
+            }
+        }
+        stage("deploy_docker"){
+            steps{
+              dir('Art-Gallery') {
+                sh "docker stop artgallery || true"  // Stop the container if it's running, ignore errors
+                sh "docker rm artgallery || true" 
+                sh "docker run -d --name artgallery -p 8080:80 rameshkumarverma/artgallery"
+            }
+            }
+        }
+      stage('Deploy to Kubernetes') {
+            steps {
+                script {
+                    dir('Art-Gallery') {
+                        withKubeConfig(caCertificate: '', clusterName: '', contextName: '', credentialsId: 'k8s', namespace: '', restrictKubeConfigAccess: false, serverUrl: '') {
+                            // Apply deployment and service YAML files
+                            sh 'kubectl apply -f deployment.yml'
+                            sh 'kubectl apply -f service.yml'
+
+                            // Get the external IP or hostname of the service
+                            // def externalIP = sh(script: 'kubectl get svc amazon-service -o jsonpath="{.status.loadBalancer.ingress[0].hostname}"', returnStdout: true).trim()
+
+                            // Print the URL in the Jenkins build log
+                            // echo "Service URL: http://${externalIP}/"
+                        }
+                    }
+                }
+            }
+        }
+
+    }
+}

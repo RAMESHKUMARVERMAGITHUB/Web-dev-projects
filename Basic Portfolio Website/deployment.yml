@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: basic_portfolio_website-deployment
+spec:
+  replicas: 2  # Number of desired replicas
+  selector:
+    matchLabels:
+      app: basic_portfolio_website
+  template:
+    metadata:
+      labels:
+        app: basic_portfolio_website
+    spec:
+      containers:
+      - name: basic_portfolio_website
+        image: rameshkumarverma/basic_portfolio_website
+        ports:
+        - containerPort: 80

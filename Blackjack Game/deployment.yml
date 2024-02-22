@@ -1,19 +1,19 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: blackjack_game-deployment
+  name: blackjack-game-deployment
 spec:
   replicas: 2  # Number of desired replicas
   selector:
     matchLabels:
-      app: blackjack_game
+      app: blackjack-game
   template:
     metadata:
       labels:
-        app: blackjack_game
+        app: blackjack-game
     spec:
       containers:
-      - name: blackjack_game
-        image: rameshkumarverma/blackjack_game
+      - name: blackjack-game
+        image: rameshkumarverma/blackjack-game
         ports:
         - containerPort: 80

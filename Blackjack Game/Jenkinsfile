@@ -62,9 +62,9 @@ pipeline{
                 script{
                   dir('Blackjack Game') {
                    withDockerRegistry(credentialsId: 'docker', toolName: 'docker'){
-                       sh "docker build -t rameshkumarverma/blackjack_game ."
-                       // sh "docker tag blackjack_game rameshkumarverma/blackjack_game:latest"
-                       sh "docker push rameshkumarverma/blackjack_game:latest"
+                       sh "docker build -t rameshkumarverma/blackjack-game ."
+                       // sh "docker tag blackjack-game rameshkumarverma/blackjack-game:latest"
+                       sh "docker push rameshkumarverma/blackjack-game:latest"
                     }
                   }
                 }
@@ -73,16 +73,16 @@ pipeline{
         stage("TRIVY"){
             steps{
               dir('Blackjack Game') {
-                sh "trivy image rameshkumarverma/blackjack_game:latest > trivyimage.txt"
+                sh "trivy image rameshkumarverma/blackjack-game:latest > trivyimage.txt"
             }
             }
         }
         stage("deploy_docker"){
             steps{
               dir('Blackjack Game') {
-                sh "docker stop blackjack_game || true"  // Stop the container if it's running, ignore errors
-                sh "docker rm blackjack_game || true" 
-                sh "docker run -d --name blackjack_game -p 8080:80 rameshkumarverma/blackjack_game"
+                sh "docker stop blackjack-game || true"  // Stop the container if it's running, ignore errors
+                sh "docker rm blackjack-game || true" 
+                sh "docker run -d --name blackjack-game -p 8080:80 rameshkumarverma/blackjack-game"
             }
             }
         }

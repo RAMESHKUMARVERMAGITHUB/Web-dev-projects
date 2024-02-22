@@ -22,8 +22,8 @@ pipeline{
             steps{
               dir('Basic Portfolio Website') {
                 withSonarQubeEnv('sonar-server') {
-                    sh ''' $SCANNER_HOME/bin/sonar-scanner -Dsonar.projectName=basic_portfolio_website \
-                    -Dsonar.projectKey=basic_portfolio_website'''
+                    sh ''' $SCANNER_HOME/bin/sonar-scanner -Dsonar.projectName=basic-portfolio-website \
+                    -Dsonar.projectKey=basic-portfolio-website'''
                 }
               }
             }
@@ -62,9 +62,9 @@ pipeline{
                 script{
                   dir('Basic Portfolio Website') {
                    withDockerRegistry(credentialsId: 'docker', toolName: 'docker'){
-                       sh "docker build -t rameshkumarverma/basic_portfolio_website ."
-                       // sh "docker tag basic_portfolio_website rameshkumarverma/basic_portfolio_website:latest"
-                       sh "docker push rameshkumarverma/basic_portfolio_website:latest"
+                       sh "docker build -t rameshkumarverma/basic-portfolio-website ."
+                       // sh "docker tag basic-portfolio-website rameshkumarverma/basic-portfolio-website:latest"
+                       sh "docker push rameshkumarverma/basic-portfolio-website:latest"
                     }
                   }
                 }
@@ -73,16 +73,16 @@ pipeline{
         stage("TRIVY"){
             steps{
               dir('Basic Portfolio Website') {
-                sh "trivy image rameshkumarverma/basic_portfolio_website:latest > trivyimage.txt"
+                sh "trivy image rameshkumarverma/basic-portfolio-website:latest > trivyimage.txt"
             }
             }
         }
         stage("deploy_docker"){
             steps{
               dir('Basic Portfolio Website') {
-                sh "docker stop basic_portfolio_website || true"  // Stop the container if it's running, ignore errors
-                sh "docker rm basic_portfolio_website || true" 
-                sh "docker run -d --name basic_portfolio_website -p 8080:80 rameshkumarverma/basic_portfolio_website"
+                sh "docker stop basic-portfolio-website || true"  // Stop the container if it's running, ignore errors
+                sh "docker rm basic-portfolio-website || true" 
+                sh "docker run -d --name basic-portfolio-website -p 8080:80 rameshkumarverma/basic-portfolio-website"
             }
             }
         }

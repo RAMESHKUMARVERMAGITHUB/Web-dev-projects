@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: basic-contact-form-deployment
+spec:
+  replicas: 2  # Number of desired replicas
+  selector:
+    matchLabels:
+      app: basic-contact-form
+  template:
+    metadata:
+      labels:
+        app: basic-contact-form
+    spec:
+      containers:
+      - name: basic-contact-form
+        image: rameshkumarverma/basic-contact-form
+        ports:
+        - containerPort: 80

@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: text-to-speech-deployment
+spec:
+  replicas: 2  # Number of desired replicas
+  selector:
+    matchLabels:
+      app: text-to-speech
+  template:
+    metadata:
+      labels:
+        app: text-to-speech
+    spec:
+      containers:
+      - name: text-to-speech
+        image: rameshkumarverma/text-to-speech
+        ports:
+        - containerPort: 80

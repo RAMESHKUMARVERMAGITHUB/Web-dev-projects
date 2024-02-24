@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: drum-kit-web-app-deployment
+spec:
+  replicas: 2  # Number of desired replicas
+  selector:
+    matchLabels:
+      app: drum-kit-web-app
+  template:
+    metadata:
+      labels:
+        app: drum-kit-web-app
+    spec:
+      containers:
+      - name: drum-kit-web-app
+        image: rameshkumarverma/drum-kit-web-app
+        ports:
+        - containerPort: 80

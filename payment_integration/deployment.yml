@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: payment-integration-deployment
+spec:
+  replicas: 2  # Number of desired replicas
+  selector:
+    matchLabels:
+      app: payment-integration
+  template:
+    metadata:
+      labels:
+        app: payment-integration
+    spec:
+      containers:
+      - name: payment-integration
+        image: rameshkumarverma/payment-integration
+        ports:
+        - containerPort: 80

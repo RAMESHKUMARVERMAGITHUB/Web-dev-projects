@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: food-website-service
+  annotations:
+    service.beta.kubernetes.io/aws-load-balancer-type: "alb"
+    service.beta.kubernetes.io/aws-load-balancer-backend-protocol: "http"
+spec:
+  selector:
+    app: food-website
+  ports:
+    - protocol: TCP
+      port: 8080  # Port exposed by the service externally (outside the cluster)
+      targetPort: 80  # Port your application listens on inside the pods
+  type: LoadBalancer

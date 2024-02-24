@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tabla-deployment
+spec:
+  replicas: 2  # Number of desired replicas
+  selector:
+    matchLabels:
+      app: tabla
+  template:
+    metadata:
+      labels:
+        app: tabla
+    spec:
+      containers:
+      - name: tabla
+        image: rameshkumarverma/tabla
+        ports:
+        - containerPort: 80

@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: jira-clone-deployment
+spec:
+  replicas: 2  # Number of desired replicas
+  selector:
+    matchLabels:
+      app: jira-clone
+  template:
+    metadata:
+      labels:
+        app: jira-clone
+    spec:
+      containers:
+      - name: jira-clone
+        image: rameshkumarverma/jira-clone
+        ports:
+        - containerPort: 80

@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: game-ping-pong-deployment
+spec:
+  replicas: 2  # Number of desired replicas
+  selector:
+    matchLabels:
+      app: game-ping-pong
+  template:
+    metadata:
+      labels:
+        app: game-ping-pong
+    spec:
+      containers:
+      - name: game-ping-pong
+        image: rameshkumarverma/game-ping-pong
+        ports:
+        - containerPort: 80

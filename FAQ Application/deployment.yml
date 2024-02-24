@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: faq-application-deployment
+spec:
+  replicas: 2  # Number of desired replicas
+  selector:
+    matchLabels:
+      app: faq-application
+  template:
+    metadata:
+      labels:
+        app: faq-application
+    spec:
+      containers:
+      - name: faq-application
+        image: rameshkumarverma/faq-application
+        ports:
+        - containerPort: 80

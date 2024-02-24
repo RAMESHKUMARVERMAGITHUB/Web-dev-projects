@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: love-calculator-deployment
+spec:
+  replicas: 2  # Number of desired replicas
+  selector:
+    matchLabels:
+      app: love-calculator
+  template:
+    metadata:
+      labels:
+        app: love-calculator
+    spec:
+      containers:
+      - name: love-calculator
+        image: rameshkumarverma/love-calculator
+        ports:
+        - containerPort: 80

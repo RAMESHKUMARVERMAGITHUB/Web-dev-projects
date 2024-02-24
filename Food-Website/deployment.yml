@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: food-website-deployment
+spec:
+  replicas: 2  # Number of desired replicas
+  selector:
+    matchLabels:
+      app: food-website
+  template:
+    metadata:
+      labels:
+        app: food-website
+    spec:
+      containers:
+      - name: food-website
+        image: rameshkumarverma/food-website
+        ports:
+        - containerPort: 80

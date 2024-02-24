@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: image-filter-app-deployment
+spec:
+  replicas: 2  # Number of desired replicas
+  selector:
+    matchLabels:
+      app: image-filter-app
+  template:
+    metadata:
+      labels:
+        app: image-filter-app
+    spec:
+      containers:
+      - name: image-filter-app
+        image: rameshkumarverma/image-filter-app
+        ports:
+        - containerPort: 80

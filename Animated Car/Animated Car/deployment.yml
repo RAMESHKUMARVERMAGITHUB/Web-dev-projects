@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: animated-car-deployment
+spec:
+  replicas: 2  # Number of desired replicas
+  selector:
+    matchLabels:
+      app: animated-car
+  template:
+    metadata:
+      labels:
+        app: animated-car
+    spec:
+      containers:
+      - name: animated-car
+        image: rameshkumarverma/animated-car
+        ports:
+        - containerPort: 80

@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: countdown-timer-deployment
+spec:
+  replicas: 2  # Number of desired replicas
+  selector:
+    matchLabels:
+      app: countdown-timer
+  template:
+    metadata:
+      labels:
+        app: countdown-timer
+    spec:
+      containers:
+      - name: countdown-timer
+        image: rameshkumarverma/countdown-timer
+        ports:
+        - containerPort: 80

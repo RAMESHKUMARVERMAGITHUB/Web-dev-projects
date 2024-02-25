@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: age-calculator-deployment
+spec:
+  replicas: 2  # Number of desired replicas
+  selector:
+    matchLabels:
+      app: age-calculator
+  template:
+    metadata:
+      labels:
+        app: age-calculator
+    spec:
+      containers:
+      - name: age-calculator
+        image: rameshkumarverma/age-calculator
+        ports:
+        - containerPort: 80

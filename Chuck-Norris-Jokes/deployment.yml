@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: chuck-norris-jokes-deployment
+spec:
+  replicas: 2  # Number of desired replicas
+  selector:
+    matchLabels:
+      app: chuck-norris-jokes
+  template:
+    metadata:
+      labels:
+        app: chuck-norris-jokes
+    spec:
+      containers:
+      - name: chuck-norris-jokes
+        image: rameshkumarverma/chuck-norris-jokes
+        ports:
+        - containerPort: 80

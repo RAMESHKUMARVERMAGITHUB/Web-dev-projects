@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: amazon-prime-login-page-clone-deployment
+spec:
+  replicas: 2  # Number of desired replicas
+  selector:
+    matchLabels:
+      app: amazon-prime-login-page-clone
+  template:
+    metadata:
+      labels:
+        app: amazon-prime-login-page-clone
+    spec:
+      containers:
+      - name: amazon-prime-login-page-clone
+        image: rameshkumarverma/amazon-prime-login-page-clone
+        ports:
+        - containerPort: 80

@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: chess-game-deployment
+spec:
+  replicas: 2  # Number of desired replicas
+  selector:
+    matchLabels:
+      app: chess-game
+  template:
+    metadata:
+      labels:
+        app: chess-game
+    spec:
+      containers:
+      - name: chess-game
+        image: rameshkumarverma/chess-game
+        ports:
+        - containerPort: 80

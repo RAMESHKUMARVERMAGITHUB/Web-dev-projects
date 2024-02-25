@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: custom-range-slider-deployment
+spec:
+  replicas: 2  # Number of desired replicas
+  selector:
+    matchLabels:
+      app: custom-range-slider
+  template:
+    metadata:
+      labels:
+        app: custom-range-slider
+    spec:
+      containers:
+      - name: custom-range-slider
+        image: rameshkumarverma/custom-range-slider
+        ports:
+        - containerPort: 80

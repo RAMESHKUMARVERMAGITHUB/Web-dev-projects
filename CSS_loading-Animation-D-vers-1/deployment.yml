@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: css-loading-animation-d-vers-1-deployment
+spec:
+  replicas: 2  # Number of desired replicas
+  selector:
+    matchLabels:
+      app: css-loading-animation-d-vers-1
+  template:
+    metadata:
+      labels:
+        app: css-loading-animation-d-vers-1
+    spec:
+      containers:
+      - name: css-loading-animation-d-vers-1
+        image: rameshkumarverma/css-loading-animation-d-vers-1
+        ports:
+        - containerPort: 80

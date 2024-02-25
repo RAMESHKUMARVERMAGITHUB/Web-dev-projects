@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: basic-background-generator-deployment
+spec:
+  replicas: 2  # Number of desired replicas
+  selector:
+    matchLabels:
+      app: basic-background-generator
+  template:
+    metadata:
+      labels:
+        app: basic-background-generator
+    spec:
+      containers:
+      - name: basic-background-generator
+        image: rameshkumarverma/basic-background-generator
+        ports:
+        - containerPort: 80

@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: file-zipper-deployment
+spec:
+  replicas: 2  # Number of desired replicas
+  selector:
+    matchLabels:
+      app: file-zipper
+  template:
+    metadata:
+      labels:
+        app: file-zipper
+    spec:
+      containers:
+      - name: file-zipper
+        image: rameshkumarverma/file-zipper
+        ports:
+        - containerPort: 80

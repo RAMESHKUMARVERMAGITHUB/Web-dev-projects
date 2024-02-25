@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: double-vertical-slider-deployment
+spec:
+  replicas: 2  # Number of desired replicas
+  selector:
+    matchLabels:
+      app: double-vertical-slider
+  template:
+    metadata:
+      labels:
+        app: double-vertical-slider
+    spec:
+      containers:
+      - name: double-vertical-slider
+        image: rameshkumarverma/double-vertical-slider
+        ports:
+        - containerPort: 80

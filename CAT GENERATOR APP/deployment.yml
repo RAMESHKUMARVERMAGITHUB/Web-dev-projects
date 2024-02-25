@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cat-generator-app-deployment
+spec:
+  replicas: 2  # Number of desired replicas
+  selector:
+    matchLabels:
+      app: cat-generator-app
+  template:
+    metadata:
+      labels:
+        app: cat-generator-app
+    spec:
+      containers:
+      - name: cat-generator-app
+        image: rameshkumarverma/cat-generator-app
+        ports:
+        - containerPort: 80

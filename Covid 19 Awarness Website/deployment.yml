@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: covid-19-awarness-website-deployment
+spec:
+  replicas: 2  # Number of desired replicas
+  selector:
+    matchLabels:
+      app: covid-19-awarness-website
+  template:
+    metadata:
+      labels:
+        app: covid-19-awarness-website
+    spec:
+      containers:
+      - name: covid-19-awarness-website
+        image: rameshkumarverma/covid-19-awarness-website
+        ports:
+        - containerPort: 80

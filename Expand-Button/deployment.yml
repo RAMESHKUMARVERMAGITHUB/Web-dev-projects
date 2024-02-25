@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: expand-button-deployment
+spec:
+  replicas: 2  # Number of desired replicas
+  selector:
+    matchLabels:
+      app: expand-button
+  template:
+    metadata:
+      labels:
+        app: expand-button
+    spec:
+      containers:
+      - name: expand-button
+        image: rameshkumarverma/expand-button
+        ports:
+        - containerPort: 80

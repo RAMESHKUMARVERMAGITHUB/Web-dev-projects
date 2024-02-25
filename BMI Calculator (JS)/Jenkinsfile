@@ -1,0 +1,110 @@
+pipeline{
+    agent any
+    // tools{
+    //     jdk 'jdk17'
+    //     nodejs 'node16'
+    // }
+    environment {
+        SCANNER_HOME=tool 'sonar-scanner'
+    }
+    stages {
+        stage('clean workspace'){
+            steps{
+                cleanWs()
+            }
+        }
+        stage('Checkout from Git'){
+            steps{
+                git branch: 'main', url: 'https://github.com/rameshkumarvermagithub/Web-dev-projects.git'
+            }
+        }
+        stage("Sonarqube Analysis "){
+            steps{
+              dir('BMI Calculator (JS)') {
+                withSonarQubeEnv('sonar-server') {
+                    sh ''' $SCANNER_HOME/bin/sonar-scanner -Dsonar.projectName=bmi-calculator-js \
+                    -Dsonar.projectKey=bmi-calculator-js'''
+                }
+              }
+            }
+        }
+        stage("quality gate"){
+           steps {
+                script {
+                  dir('BMI Calculator (JS)') {
+                    waitForQualityGate abortPipeline: false, credentialsId: 'sonar'
+                }
+                }
+            }
+        }
+        // stage('Install Dependencies') {
+        //     steps {
+        //         sh "npm install"
+        //     }
+        // }
+        stage('OWASP FS SCAN') {
+            steps {
+              dir('BMI Calculator (JS)') {
+                dependencyCheck additionalArguments: '--scan ./ --disableYarnAudit --disableNodeAudit', odcInstallation: 'DP-Check'
+                dependencyCheckPublisher pattern: '**/dependency-check-report.xml'
+            }
+            }
+        }
+         stage('TRIVY FS SCAN') {
+            steps {
+              dir('BMI Calculator (JS)') {
+                sh "trivy fs . > trivyfs.txt"
+            }
+            }
+        }
+        stage("Docker Build & Push"){
+            steps{
+                script{
+                  dir('BMI Calculator (JS)') {
+                   withDockerRegistry(credentialsId: 'docker', toolName: 'docker'){
+                       sh "docker build -t rameshkumarverma/bmi-calculator-js ."
+                       // sh "docker tag bmi-calculator-js rameshkumarverma/bmi-calculator-js:latest"
+                       sh "docker push rameshkumarverma/bmi-calculator-js:latest"
+                    }
+                  }
+                }
+            }
+        }
+        stage("TRIVY"){
+            steps{
+              dir('BMI Calculator (JS)') {
+                sh "trivy image rameshkumarverma/bmi-calculator-js:latest > trivyimage.txt"
+            }
+            }
+        }
+        stage("deploy_docker"){
+            steps{
+              dir('BMI Calculator (JS)') {
+                sh "docker stop bmi-calculator-js || true"  // Stop the container if it's running, ignore errors
+                sh "docker rm bmi-calculator-js || true" 
+                sh "docker run -d --name bmi-calculator-js -p 8080:80 rameshkumarverma/bmi-calculator-js"
+            }
+            }
+        }
+      stage('Deploy to Kubernetes') {
+            steps {
+                script {
+                    dir('BMI Calculator (JS)') {
+                        withKubeConfig(caCertificate: '', clusterName: '', contextName: '', credentialsId: 'k8s', namespace: '', restrictKubeConfigAccess: false, serverUrl: '') {
+                            // Apply deployment and service YAML files
+                            sh 'kubectl apply -f deployment.yml'
+                            sh 'kubectl apply -f service.yml'
+
+                            // Get the external IP or hostname of the service
+                            // def externalIP = sh(script: 'kubectl get svc amazon-service -o jsonpath="{.status.loadBalancer.ingress[0].hostname}"', returnStdout: true).trim()
+
+                            // Print the URL in the Jenkins build log
+                            // echo "Service URL: http://${externalIP}/"
+                        }
+                    }
+                }
+            }
+        }
+
+    }
+}

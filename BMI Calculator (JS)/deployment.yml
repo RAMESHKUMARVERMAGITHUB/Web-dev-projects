@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: bmi-calculator-js-deployment
+spec:
+  replicas: 2  # Number of desired replicas
+  selector:
+    matchLabels:
+      app: bmi-calculator-js
+  template:
+    metadata:
+      labels:
+        app: bmi-calculator-js
+    spec:
+      containers:
+      - name: bmi-calculator-js
+        image: rameshkumarverma/bmi-calculator-js
+        ports:
+        - containerPort: 80

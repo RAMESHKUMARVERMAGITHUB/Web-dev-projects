@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: classifier-using-js-deployment
+spec:
+  replicas: 2  # Number of desired replicas
+  selector:
+    matchLabels:
+      app: classifier-using-js
+  template:
+    metadata:
+      labels:
+        app: classifier-using-js
+    spec:
+      containers:
+      - name: classifier-using-js
+        image: rameshkumarverma/classifier-using-js
+        ports:
+        - containerPort: 80

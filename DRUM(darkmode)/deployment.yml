@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: drum-darkmode-deployment
+spec:
+  replicas: 2  # Number of desired replicas
+  selector:
+    matchLabels:
+      app: drum-darkmode
+  template:
+    metadata:
+      labels:
+        app: drum-darkmode
+    spec:
+      containers:
+      - name: drum-darkmode
+        image: rameshkumarverma/drum-darkmode
+        ports:
+        - containerPort: 80

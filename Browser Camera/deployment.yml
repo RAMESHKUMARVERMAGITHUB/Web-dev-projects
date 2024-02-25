@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: browser-camera-deployment
+spec:
+  replicas: 2  # Number of desired replicas
+  selector:
+    matchLabels:
+      app: browser-camera
+  template:
+    metadata:
+      labels:
+        app: browser-camera
+    spec:
+      containers:
+      - name: browser-camera
+        image: rameshkumarverma/browser-camera
+        ports:
+        - containerPort: 80

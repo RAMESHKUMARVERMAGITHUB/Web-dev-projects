@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: digital-javascript-clock-deployment
+spec:
+  replicas: 2  # Number of desired replicas
+  selector:
+    matchLabels:
+      app: digital-javascript-clock
+  template:
+    metadata:
+      labels:
+        app: digital-javascript-clock
+    spec:
+      containers:
+      - name: digital-javascript-clock
+        image: rameshkumarverma/digital-javascript-clock
+        ports:
+        - containerPort: 80

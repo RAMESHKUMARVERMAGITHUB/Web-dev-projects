@@ -1,0 +1,20 @@
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: google-page-project-deployment
+spec:
+  replicas: 2  # Number of desired replicas
+  selector:
+    matchLabels:
+      app: google-page-project
+  template:
+    metadata:
+      labels:
+        app: google-page-project
+    spec:
+      containers:
+      - name: google-page-project
+        image: rameshkumarverma/google-page-project
+        ports:
+        - containerPort: 80

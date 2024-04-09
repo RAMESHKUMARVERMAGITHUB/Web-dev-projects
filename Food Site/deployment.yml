@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: food-site-deployment
+spec:
+  replicas: 2  # Number of desired replicas
+  selector:
+    matchLabels:
+      app: food-site
+  template:
+    metadata:
+      labels:
+        app: food-site
+    spec:
+      containers:
+      - name: food-site
+        image: rameshkumarverma/file-zipper
+        ports:
+        - containerPort: 80

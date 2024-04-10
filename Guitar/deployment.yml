@@ -1,0 +1,20 @@
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: guitar-deployment
+spec:
+  replicas: 2  # Number of desired replicas
+  selector:
+    matchLabels:
+      app: guitar
+  template:
+    metadata:
+      labels:
+        app: guitar
+    spec:
+      containers:
+      - name: guitar
+        image: rameshkumarverma/guitar
+        ports:
+        - containerPort: 80

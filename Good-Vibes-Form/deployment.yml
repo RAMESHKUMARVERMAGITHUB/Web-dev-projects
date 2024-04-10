@@ -1,0 +1,20 @@
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: good-vibes-form-deployment
+spec:
+  replicas: 2  # Number of desired replicas
+  selector:
+    matchLabels:
+      app: good-vibes-form
+  template:
+    metadata:
+      labels:
+        app: good-vibes-form
+    spec:
+      containers:
+      - name: good-vibes-form
+        image: rameshkumarverma/good-vibes-form
+        ports:
+        - containerPort: 80

@@ -1,0 +1,20 @@
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: glassmorphism-form-deployment
+spec:
+  replicas: 2  # Number of desired replicas
+  selector:
+    matchLabels:
+      app: glassmorphism-form
+  template:
+    metadata:
+      labels:
+        app: glassmorphism-form
+    spec:
+      containers:
+      - name: glassmorphism-form
+        image: rameshkumarverma/glassmorphism-form
+        ports:
+        - containerPort: 80

@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: github-profile-finder-deployment
+spec:
+  replicas: 2  # Number of desired replicas
+  selector:
+    matchLabels:
+      app: github-profile-finder
+  template:
+    metadata:
+      labels:
+        app: github-profile-finder
+    spec:
+      containers:
+      - name: github-profile-finder
+        image: rameshkumarverma/github-profile-finder
+        ports:
+        - containerPort: 80

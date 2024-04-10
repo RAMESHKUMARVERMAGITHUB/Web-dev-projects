@@ -1,0 +1,20 @@
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: interactive-pricing-component-deployment
+spec:
+  replicas: 2  # Number of desired replicas
+  selector:
+    matchLabels:
+      app: interactive-pricing-component
+  template:
+    metadata:
+      labels:
+        app: interactive-pricing-component
+    spec:
+      containers:
+      - name: interactive-pricing-component
+        image: rameshkumarverma/interactive-pricing-component
+        ports:
+        - containerPort: 80

@@ -1,0 +1,20 @@
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: instagram-logo-using-css-deployment
+spec:
+  replicas: 2  # Number of desired replicas
+  selector:
+    matchLabels:
+      app: instagram-logo-using-css
+  template:
+    metadata:
+      labels:
+        app: instagram-logo-using-css
+    spec:
+      containers:
+      - name: instagram-logo-using-css
+        image: rameshkumarverma/instagram-logo-using-css
+        ports:
+        - containerPort: 80

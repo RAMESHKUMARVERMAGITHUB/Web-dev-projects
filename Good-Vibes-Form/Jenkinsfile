@@ -1,0 +1,111 @@
+
+pipeline{
+    agent any
+    // tools{
+    //     jdk 'jdk17'
+    //     nodejs 'node16'
+    // }
+    environment {
+        SCANNER_HOME=tool 'sonar-scanner'
+    }
+    stages {
+        stage('clean workspace'){
+            steps{
+                cleanWs()
+            }
+        }
+        stage('Checkout from Git'){
+            steps{
+                git branch: 'main', url: 'https://github.com/rameshkumarvermagithub/Web-dev-projects.git'
+            }
+        }
+        stage("Sonarqube Analysis "){
+            steps{
+              dir('Good-Vibes-Form') {
+                withSonarQubeEnv('sonar-server') {
+                    sh ''' $SCANNER_HOME/bin/sonar-scanner -Dsonar.projectName=good-vibes-form \
+                    -Dsonar.projectKey=good-vibes-form'''
+                }
+              }
+            }
+        }
+        stage("quality gate"){
+           steps {
+                script {
+                  dir('Good-Vibes-Form') {
+                    waitForQualityGate abortPipeline: false, credentialsId: 'sonar'
+                }
+                }
+            }
+        }
+        // stage('Install Dependencies') {
+        //     steps {
+        //         sh "npm install"
+        //     }
+        // }
+        stage('OWASP FS SCAN') {
+            steps {
+              dir('Good-Vibes-Form') {
+                dependencyCheck additionalArguments: '--scan ./ --disableYarnAudit --disableNodeAudit', odcInstallation: 'DP-Check'
+                dependencyCheckPublisher pattern: '**/dependency-check-report.xml'
+            }
+            }
+        }
+         stage('TRIVY FS SCAN') {
+            steps {
+              dir('Good-Vibes-Form') {
+                sh "trivy fs . > trivyfs.txt"
+            }
+            }
+        }
+        stage("Docker Build & Push"){
+            steps{
+                script{
+                  dir('Good-Vibes-Form') {
+                   withDockerRegistry(credentialsId: 'docker', toolName: 'docker'){
+                       sh "docker build -t rameshkumarverma/good-vibes-form ."
+                       // sh "docker tag good-vibes-form rameshkumarverma/good-vibes-form:latest"
+                       sh "docker push rameshkumarverma/good-vibes-form:latest"
+                    }
+                  }
+                }
+            }
+        }
+        stage("TRIVY"){
+            steps{
+              dir('Good-Vibes-Form') {
+                sh "trivy image rameshkumarverma/good-vibes-form:latest > trivyimage.txt"
+            }
+            }
+        }
+        stage("deploy_docker"){
+            steps{
+              dir('Good-Vibes-Form') {
+                sh "docker stop good-vibes-form || true"  // Stop the container if it's running, ignore errors
+                sh "docker rm good-vibes-form || true" 
+                sh "docker run -d --name good-vibes-form -p 8080:80 rameshkumarverma/good-vibes-form"
+            }
+            }
+        }
+      stage('Deploy to Kubernetes') {
+            steps {
+                script {
+                    dir('Good-Vibes-Form') {
+                        withKubeConfig(caCertificate: '', clusterName: '', contextName: '', credentialsId: 'k8s', namespace: '', restrictKubeConfigAccess: false, serverUrl: '') {
+                            // Apply deployment and service YAML files
+                            sh 'kubectl apply -f deployment.yml'
+                            sh 'kubectl apply -f service.yml'
+
+                            // Get the external IP or hostname of the service
+                            // def externalIP = sh(script: 'kubectl get svc amazon-service -o jsonpath="{.status.loadBalancer.ingress[0].hostname}"', returnStdout: true).trim()
+
+                            // Print the URL in the Jenkins build log
+                            // echo "Service URL: http://${externalIP}/"
+                        }
+                    }
+                }
+            }
+        }
+
+    }
+}

@@ -1,0 +1,111 @@
+
+pipeline{
+    agent any
+    // tools{
+    //     jdk 'jdk17'
+    //     nodejs 'node16'
+    // }
+    environment {
+        SCANNER_HOME=tool 'sonar-scanner'
+    }
+    stages {
+        stage('clean workspace'){
+            steps{
+                cleanWs()
+            }
+        }
+        stage('Checkout from Git'){
+            steps{
+                git branch: 'main', url: 'https://github.com/rameshkumarvermagithub/Web-dev-projects.git'
+            }
+        }
+        stage("Sonarqube Analysis "){
+            steps{
+              dir('Instagram-logo-using-CSS') {
+                withSonarQubeEnv('sonar-server') {
+                    sh ''' $SCANNER_HOME/bin/sonar-scanner -Dsonar.projectName=instagram-logo-using-css \
+                    -Dsonar.projectKey=instagram-logo-using-css'''
+                }
+              }
+            }
+        }
+        stage("quality gate"){
+           steps {
+                script {
+                  dir('Instagram-logo-using-CSS') {
+                    waitForQualityGate abortPipeline: false, credentialsId: 'sonar'
+                }
+                }
+            }
+        }
+        // stage('Install Dependencies') {
+        //     steps {
+        //         sh "npm install"
+        //     }
+        // }
+        stage('OWASP FS SCAN') {
+            steps {
+              dir('Instagram-logo-using-CSS') {
+                dependencyCheck additionalArguments: '--scan ./ --disableYarnAudit --disableNodeAudit', odcInstallation: 'DP-Check'
+                dependencyCheckPublisher pattern: '**/dependency-check-report.xml'
+            }
+            }
+        }
+         stage('TRIVY FS SCAN') {
+            steps {
+              dir('Instagram-logo-using-CSS') {
+                sh "trivy fs . > trivyfs.txt"
+            }
+            }
+        }
+        stage("Docker Build & Push"){
+            steps{
+                script{
+                  dir('Instagram-logo-using-CSS') {
+                   withDockerRegistry(credentialsId: 'docker', toolName: 'docker'){
+                       sh "docker build -t rameshkumarverma/instagram-logo-using-css ."
+                       // sh "docker tag instagram-logo-using-css rameshkumarverma/instagram-logo-using-css:latest"
+                       sh "docker push rameshkumarverma/instagram-logo-using-css:latest"
+                    }
+                  }
+                }
+            }
+        }
+        stage("TRIVY"){
+            steps{
+              dir('Instagram-logo-using-CSS') {
+                sh "trivy image rameshkumarverma/instagram-logo-using-css:latest > trivyimage.txt"
+            }
+            }
+        }
+        stage("deploy_docker"){
+            steps{
+              dir('Instagram-logo-using-CSS') {
+                sh "docker stop instagram-logo-using-css || true"  // Stop the container if it's running, ignore errors
+                sh "docker rm instagram-logo-using-css || true" 
+                sh "docker run -d --name instagram-logo-using-css -p 8080:80 rameshkumarverma/instagram-logo-using-css"
+            }
+            }
+        }
+      stage('Deploy to Kubernetes') {
+            steps {
+                script {
+                    dir('Instagram-logo-using-CSS') {
+                        withKubeConfig(caCertificate: '', clusterName: '', contextName: '', credentialsId: 'k8s', namespace: '', restrictKubeConfigAccess: false, serverUrl: '') {
+                            // Apply deployment and service YAML files
+                            sh 'kubectl apply -f deployment.yml'
+                            sh 'kubectl apply -f service.yml'
+
+                            // Get the external IP or hostname of the service
+                            // def externalIP = sh(script: 'kubectl get svc amazon-service -o jsonpath="{.status.loadBalancer.ingress[0].hostname}"', returnStdout: true).trim()
+
+                            // Print the URL in the Jenkins build log
+                            // echo "Service URL: http://${externalIP}/"
+                        }
+                    }
+                }
+            }
+        }
+
+    }
+}

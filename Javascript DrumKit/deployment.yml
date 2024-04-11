@@ -1,0 +1,20 @@
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: javascript-drumkit-deployment
+spec:
+  replicas: 2  # Number of desired replicas
+  selector:
+    matchLabels:
+      app: javascript-drumkitjavascript-drumkit
+  template:
+    metadata:
+      labels:
+        app: javascript-drumkit
+    spec:
+      containers:
+      - name: javascript-drumkit
+        image: rameshkumarverma/javascript-drumkit
+        ports:
+        - containerPort: 80

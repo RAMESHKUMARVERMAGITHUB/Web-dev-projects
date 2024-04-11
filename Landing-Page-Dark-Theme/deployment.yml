@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: landing-page-dark-theme-deployment
+spec:
+  replicas: 2  # Number of desired replicas
+  selector:
+    matchLabels:
+      app: landing-page-dark-theme
+  template:
+    metadata:
+      labels:
+        app: landing-page-dark-theme
+    spec:
+      containers:
+      - name: landing-page-dark-theme
+        image: rameshkumarverma/landing-page-dark-theme
+        ports:
+        - containerPort: 80

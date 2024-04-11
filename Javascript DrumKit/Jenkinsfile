@@ -82,7 +82,7 @@ pipeline{
               dir('Javascript DrumKit') {
                 sh "docker stop javascript-drumkit || true"  // Stop the container if it's running, ignore errors
                 sh "docker rm javascript-drumkit || true" 
-                sh "docker run -d --name javascript-drumkit -p 8080:80 rameshkumarverma/javascript-drumkit"
+                sh "docker run -d --name javascript-drumkit -p 8081:80 rameshkumarverma/javascript-drumkit"
             }
             }
         }

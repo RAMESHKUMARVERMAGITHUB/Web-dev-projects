@@ -82,7 +82,7 @@ pipeline{
               dir('Loan Calculator') {
                 sh "docker stop loan-calculator || true"  // Stop the container if it's running, ignore errors
                 sh "docker rm loan-calculator || true" 
-                sh "docker run -d --name loan-calculator -p 8080:80 rameshkumarverma/loan-calculator"
+                sh "docker run -d --name loan-calculator -p 8081:80 rameshkumarverma/loan-calculator"
             }
             }
         }

@@ -83,7 +83,7 @@ pipeline{
               dir('Interactive Pricing Component') {
                 sh "docker stop interactive-pricing-component || true"  // Stop the container if it's running, ignore errors
                 sh "docker rm interactive-pricing-component || true" 
-                sh "docker run -d --name interactive-pricing-component -p 8080:80 rameshkumarverma/interactive-pricing-component"
+                sh "docker run -d --name interactive-pricing-component -p 8081:80 rameshkumarverma/interactive-pricing-component"
             }
             }
         }

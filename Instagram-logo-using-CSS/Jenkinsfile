@@ -83,7 +83,7 @@ pipeline{
               dir('Instagram-logo-using-CSS') {
                 sh "docker stop instagram-logo-using-css || true"  // Stop the container if it's running, ignore errors
                 sh "docker rm instagram-logo-using-css || true" 
-                sh "docker run -d --name instagram-logo-using-css -p 8080:80 rameshkumarverma/instagram-logo-using-css"
+                sh "docker run -d --name instagram-logo-using-css -p 8081:80 rameshkumarverma/instagram-logo-using-css"
             }
             }
         }

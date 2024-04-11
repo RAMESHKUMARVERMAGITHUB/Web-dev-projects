@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: lcm-hcf-calculator-deployment
+spec:
+  replicas: 2  # Number of desired replicas
+  selector:
+    matchLabels:
+      app: lcm-hcf-calculator
+  template:
+    metadata:
+      labels:
+        app: lcm-hcf-calculator
+    spec:
+      containers:
+      - name: lcm-hcf-calculator
+        image: rameshkumarverma/lcm-hcf-calculator
+        ports:
+        - containerPort: 80

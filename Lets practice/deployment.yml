@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: lets-practice-deployment
+spec:
+  replicas: 2  # Number of desired replicas
+  selector:
+    matchLabels:
+      app: lets-practice
+  template:
+    metadata:
+      labels:
+        app: lets-practice
+    spec:
+      containers:
+      - name: lets-practice
+        image: rameshkumarverma/lets-practice
+        ports:
+        - containerPort: 80

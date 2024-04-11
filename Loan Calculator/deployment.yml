@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: loan-calculator-deployment
+spec:
+  replicas: 2  # Number of desired replicas
+  selector:
+    matchLabels:
+      app: loan-calculator
+  template:
+    metadata:
+      labels:
+        app: loan-calculator
+    spec:
+      containers:
+      - name: loan-calculator
+        image: rameshkumarverma/loan-calculator
+        ports:
+        - containerPort: 80

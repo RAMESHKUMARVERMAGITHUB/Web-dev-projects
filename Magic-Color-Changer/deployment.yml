@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: magic-color-changer-deployment
+spec:
+  replicas: 2  # Number of desired replicas
+  selector:
+    matchLabels:
+      app: magic-color-changer
+  template:
+    metadata:
+      labels:
+        app: magic-color-changer
+    spec:
+      containers:
+      - name: magic-color-changer
+        image: rameshkumarverma/magic-color-changer
+        ports:
+        - containerPort: 80

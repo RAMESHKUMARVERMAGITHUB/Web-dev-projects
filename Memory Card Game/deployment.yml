@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: memory-card-game-deployment
+spec:
+  replicas: 2  # Number of desired replicas
+  selector:
+    matchLabels:
+      app: memory-card-game
+  template:
+    metadata:
+      labels:
+        app: memory-card-game
+    spec:
+      containers:
+      - name: memory-card-game
+        image: rameshkumarverma/memory-card-game
+        ports:
+        - containerPort: 80

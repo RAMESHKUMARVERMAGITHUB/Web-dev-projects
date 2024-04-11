@@ -83,7 +83,7 @@ pipeline{
               dir('Guitar') {
                 sh "docker stop guitar || true"  // Stop the container if it's running, ignore errors
                 sh "docker rm guitar || true" 
-                sh "docker run -d --name guitar -p 8080:80 rameshkumarverma/guitar"
+                sh "docker run -d --name guitar -p 8081:80 rameshkumarverma/guitar"
             }
             }
         }

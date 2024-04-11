@@ -83,7 +83,7 @@ pipeline{
               dir('LCM-HCF-CALCULATOR') {
                 sh "docker stop lcm-hcf-calculator || true"  // Stop the container if it's running, ignore errors
                 sh "docker rm lcm-hcf-calculator || true" 
-                sh "docker run -d --name lcm-hcf-calculator -p 8080:80 rameshkumarverma/lcm-hcf-calculator"
+                sh "docker run -d --name lcm-hcf-calculator -p 8081:80 rameshkumarverma/lcm-hcf-calculator"
             }
             }
         }

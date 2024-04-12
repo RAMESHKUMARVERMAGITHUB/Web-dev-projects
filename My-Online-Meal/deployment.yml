@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: my-online-meal-deployment
+spec:
+  replicas: 2  # Number of desired replicas
+  selector:
+    matchLabels:
+      app: my-online-meal
+  template:
+    metadata:
+      labels:
+        app: my-online-meal
+    spec:
+      containers:
+      - name: my-online-meal
+        image: rameshkumarverma/my-online-meal
+        ports:
+        - containerPort: 80

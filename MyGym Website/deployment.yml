@@ -1,0 +1,20 @@
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mygym-website-deployment
+spec:
+  replicas: 2  # Number of desired replicas
+  selector:
+    matchLabels:
+      app: mygym-website
+  template:
+    metadata:
+      labels:
+        app: mygym-website
+    spec:
+      containers:
+      - name: mygym-website
+        image: rameshkumarverma/mygym-website
+        ports:
+        - containerPort: 80

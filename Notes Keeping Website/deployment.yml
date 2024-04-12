@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: notes-keeping-website-deployment
+spec:
+  replicas: 2  # Number of desired replicas
+  selector:
+    matchLabels:
+      app: notes-keeping-website
+  template:
+    metadata:
+      labels:
+        app: notes-keeping-website
+    spec:
+      containers:
+      - name: notes-keeping-website
+        image: rameshkumarverma/notes-keeping-website
+        ports:
+        - containerPort: 80

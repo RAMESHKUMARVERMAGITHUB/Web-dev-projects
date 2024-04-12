@@ -2,19 +2,19 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: clock-deployment
+  name: movie-search-app-deployment
 spec:
   replicas: 2  # Number of desired replicas
   selector:
     matchLabels:
-      app: clock
+      app: movie-search-app
   template:
     metadata:
       labels:
-        app: clock
+        app: movie-search-app
     spec:
       containers:
-      - name: clock
-        image: rameshkumarverma/clock
+      - name: movie-search-app
+        image: rameshkumarverma/movie-search-app
         ports:
         - containerPort: 80

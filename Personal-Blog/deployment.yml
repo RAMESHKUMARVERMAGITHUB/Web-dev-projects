@@ -1,0 +1,20 @@
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: personal-blog-deployment
+spec:
+  replicas: 2  # Number of desired replicas
+  selector:
+    matchLabels:
+      app: personal-blog
+  template:
+    metadata:
+      labels:
+        app: personal-blog
+    spec:
+      containers:
+      - name: personal-blog
+        image: rameshkumarverma/personal-blog
+        ports:
+        - containerPort: 80

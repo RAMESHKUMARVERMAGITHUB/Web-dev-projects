@@ -1,0 +1,20 @@
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: neumorphism-calculator-d-vers-1-deployment
+spec:
+  replicas: 2  # Number of desired replicas
+  selector:
+    matchLabels:
+      app: neumorphism-calculator-d-vers-1
+  template:
+    metadata:
+      labels:
+        app: neumorphism-calculator-d-vers-1
+    spec:
+      containers:
+      - name: neumorphism-calculator-d-vers-1
+        image: rameshkumarverma/neumorphism-calculator-d-vers-1
+        ports:
+        - containerPort: 80

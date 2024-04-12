@@ -1,0 +1,20 @@
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: product-landing-page-deployment
+spec:
+  replicas: 2  # Number of desired replicas
+  selector:
+    matchLabels:
+      app: product-landing-page
+  template:
+    metadata:
+      labels:
+        app: product-landing-page
+    spec:
+      containers:
+      - name: product-landing-page
+        image: rameshkumarverma/product-landing-page
+        ports:
+        - containerPort: 80

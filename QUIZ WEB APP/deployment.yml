@@ -1,0 +1,20 @@
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: quiz-web-app-deployment
+spec:
+  replicas: 2  # Number of desired replicas
+  selector:
+    matchLabels:
+      app: quiz-web-app
+  template:
+    metadata:
+      labels:
+        app: quiz-web-app
+    spec:
+      containers:
+      - name: quiz-web-app
+        image: rameshkumarverma/quiz-web-app
+        ports:
+        - containerPort: 80

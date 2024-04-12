@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: movie-website-deployment
+spec:
+  replicas: 2  # Number of desired replicas
+  selector:
+    matchLabels:
+      app: movie-website
+  template:
+    metadata:
+      labels:
+        app: movie-website
+    spec:
+      containers:
+      - name: movie-website
+        image: rameshkumarverma/movie-website
+        ports:
+        - containerPort: 80

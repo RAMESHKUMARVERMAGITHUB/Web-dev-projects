@@ -1,0 +1,20 @@
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: password-strength-meter-deployment
+spec:
+  replicas: 2  # Number of desired replicas
+  selector:
+    matchLabels:
+      app: password-strength-meter
+  template:
+    metadata:
+      labels:
+        app: password-strength-meter
+    spec:
+      containers:
+      - name: password-strength-meter
+        image: rameshkumarverma/password-strength-meter
+        ports:
+        - containerPort: 80

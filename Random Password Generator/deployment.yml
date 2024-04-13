@@ -1,0 +1,20 @@
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: random-password-generator-deployment
+spec:
+  replicas: 2  # Number of desired replicas
+  selector:
+    matchLabels:
+      app: random-password-generator
+  template:
+    metadata:
+      labels:
+        app: random-password-generator
+    spec:
+      containers:
+      - name: random-password-generator
+        image: rameshkumarverma/random-password-generator
+        ports:
+        - containerPort: 80

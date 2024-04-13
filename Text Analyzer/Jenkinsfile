@@ -1,0 +1,111 @@
+
+pipeline{
+    agent any
+    // tools{
+    //     jdk 'jdk17'
+    //     nodejs 'node16'
+    // }
+    environment {
+        SCANNER_HOME=tool 'sonar-scanner'
+    }
+    stages {
+        stage('clean workspace'){
+            steps{
+                cleanWs()
+            }
+        }
+        stage('Checkout from Git'){
+            steps{
+                git branch: 'main', url: 'https://github.com/rameshkumarvermagithub/Web-dev-projects.git'
+            }
+        }
+        stage("Sonarqube Analysis "){
+            steps{
+              dir('Text Analyzer') {
+                withSonarQubeEnv('sonar-server') {
+                    sh ''' $SCANNER_HOME/bin/sonar-scanner -Dsonar.projectName=text-analyzer \
+                    -Dsonar.projectKey=text-analyzer'''
+                }
+              }
+            }
+        }
+        stage("quality gate"){
+           steps {
+                script {
+                  dir('Text Analyzer') {
+                    waitForQualityGate abortPipeline: false, credentialsId: 'sonar'
+                }
+                }
+            }
+        }
+        // stage('Install Dependencies') {
+        //     steps {
+        //         sh "npm install"
+        //     }
+        // }
+        stage('OWASP FS SCAN') {
+            steps {
+              dir('Text Analyzer') {
+                dependencyCheck additionalArguments: '--scan ./ --disableYarnAudit --disableNodeAudit', odcInstallation: 'DP-Check'
+                dependencyCheckPublisher pattern: '**/dependency-check-report.xml'
+            }
+            }
+        }
+         stage('TRIVY FS SCAN') {
+            steps {
+              dir('Text Analyzer') {
+                sh "trivy fs . > trivyfs.txt"
+            }
+            }
+        }
+        stage("Docker Build & Push"){
+            steps{
+                script{
+                  dir('Text Analyzer') {
+                   withDockerRegistry(credentialsId: 'docker', toolName: 'docker'){
+                       sh "docker build -t rameshkumarverma/text-analyzer ."
+                       // sh "docker tag text-analyzer rameshkumarverma/text-analyzer:latest"
+                       sh "docker push rameshkumarverma/text-analyzer:latest"
+                    }
+                  }
+                }
+            }
+        }
+        stage("TRIVY"){
+            steps{
+              dir('Text Analyzer') {
+                sh "trivy image rameshkumarverma/text-analyzer:latest > trivyimage.txt"
+            }
+            }
+        }
+        stage("deploy_docker"){
+            steps{
+              dir('Text Analyzer') {
+                sh "docker stop text-analyzer || true"  // Stop the container if it's running, ignore errors
+                sh "docker rm text-analyzer || true" 
+                sh "docker run -d --name text-analyzer -p 8081:80 rameshkumarverma/text-analyzer"
+            }
+            }
+        }
+      stage('Deploy to Kubernetes') {
+            steps {
+                script {
+                    dir('Text Analyzer') {
+                        withKubeConfig(caCertificate: '', clusterName: '', contextName: '', credentialsId: 'k8s', namespace: '', restrictKubeConfigAccess: false, serverUrl: '') {
+                            // Apply deployment and service YAML files
+                            sh 'kubectl apply -f deployment.yml'
+                            sh 'kubectl apply -f service.yml'
+
+                            // Get the external IP or hostname of the service
+                            // def externalIP = sh(script: 'kubectl get svc amazon-service -o jsonpath="{.status.loadBalancer.ingress[0].hostname}"', returnStdout: true).trim()
+
+                            // Print the URL in the Jenkins build log
+                            // echo "Service URL: http://${externalIP}/"
+                        }
+                    }
+                }
+            }
+        }
+
+    }
+}

@@ -1,0 +1,20 @@
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: text-analyzer-deployment
+spec:
+  replicas: 2  # Number of desired replicas
+  selector:
+    matchLabels:
+      app: text-analyzer
+  template:
+    metadata:
+      labels:
+        app: text-analyzer
+    spec:
+      containers:
+      - name: text-analyzer
+        image: rameshkumarverma/text-analyzer
+        ports:
+        - containerPort: 80

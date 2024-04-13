@@ -82,7 +82,7 @@ pipeline{
               dir('Password Generator') {
                 sh "docker stop password-generator || true"  // Stop the container if it's running, ignore errors
                 sh "docker rm password-generator || true" 
-                sh "docker run -d --name password-generator -p 8080:80 rameshkumarverma/password-generator"
+                sh "docker run -d --name password-generator -p 8081:80 rameshkumarverma/password-generator"
             }
             }
         }

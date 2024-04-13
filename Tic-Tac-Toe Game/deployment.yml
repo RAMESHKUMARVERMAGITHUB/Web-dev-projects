@@ -1,0 +1,20 @@
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tic-tac-toe-game-deployment
+spec:
+  replicas: 2  # Number of desired replicas
+  selector:
+    matchLabels:
+      app: tic-tac-toe-game
+  template:
+    metadata:
+      labels:
+        app: tic-tac-toe-game
+    spec:
+      containers:
+      - name: tic-tac-toe-game
+        image: rameshkumarverma/tic-tac-toe-game
+        ports:
+        - containerPort: 80

@@ -1,0 +1,20 @@
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: simon-game-deployment
+spec:
+  replicas: 2  # Number of desired replicas
+  selector:
+    matchLabels:
+      app: simon-game
+  template:
+    metadata:
+      labels:
+        app: simon-game
+    spec:
+      containers:
+      - name: simon-game
+        image: rameshkumarverma/simon-game
+        ports:
+        - containerPort: 80

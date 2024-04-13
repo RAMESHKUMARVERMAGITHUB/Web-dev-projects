@@ -1,0 +1,20 @@
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: weight-converter-deployment
+spec:
+  replicas: 2  # Number of desired replicas
+  selector:
+    matchLabels:
+      app: weight-converter
+  template:
+    metadata:
+      labels:
+        app: weight-converter
+    spec:
+      containers:
+      - name: weight-converter
+        image: rameshkumarverma/weight-converter
+        ports:
+        - containerPort: 80

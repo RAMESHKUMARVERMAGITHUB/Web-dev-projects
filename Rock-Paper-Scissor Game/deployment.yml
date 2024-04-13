@@ -1,0 +1,20 @@
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: rock-paper-scissor-game-deployment
+spec:
+  replicas: 2  # Number of desired replicas
+  selector:
+    matchLabels:
+      app: rock-paper-scissor-game
+  template:
+    metadata:
+      labels:
+        app: rock-paper-scissor-game
+    spec:
+      containers:
+      - name: rock-paper-scissor-game
+        image: rameshkumarverma/rock-paper-scissor-game
+        ports:
+        - containerPort: 80

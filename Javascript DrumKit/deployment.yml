@@ -7,7 +7,7 @@ spec:
   replicas: 2  # Number of desired replicas
   selector:
     matchLabels:
-      app: javascript-drumkitjavascript-drumkit
+      app: javascript-drumkit
   template:
     metadata:
       labels:

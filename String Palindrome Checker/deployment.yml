@@ -1,0 +1,20 @@
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: string-palindrome-checker-deployment
+spec:
+  replicas: 2  # Number of desired replicas
+  selector:
+    matchLabels:
+      app: string-palindrome-checker
+  template:
+    metadata:
+      labels:
+        app: string-palindrome-checker
+    spec:
+      containers:
+      - name: string-palindrome-checker
+        image: rameshkumarverma/string-palindrome-checker
+        ports:
+        - containerPort: 80

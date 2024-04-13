@@ -1,0 +1,20 @@
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: temperature-convertor-deployment
+spec:
+  replicas: 2  # Number of desired replicas
+  selector:
+    matchLabels:
+      app: temperature-convertor
+  template:
+    metadata:
+      labels:
+        app: temperature-convertor
+    spec:
+      containers:
+      - name: temperature-convertor
+        image: rameshkumarverma/temperature-convertor
+        ports:
+        - containerPort: 80

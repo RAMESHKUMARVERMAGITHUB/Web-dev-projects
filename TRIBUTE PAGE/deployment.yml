@@ -1,0 +1,20 @@
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tribute-page-deployment
+spec:
+  replicas: 2  # Number of desired replicas
+  selector:
+    matchLabels:
+      app: tribute-page
+  template:
+    metadata:
+      labels:
+        app: tribute-page
+    spec:
+      containers:
+      - name: tribute-page
+        image: rameshkumarverma/tribute-page
+        ports:
+        - containerPort: 80

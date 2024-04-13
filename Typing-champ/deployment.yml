@@ -1,0 +1,20 @@
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: typing-champ-deployment
+spec:
+  replicas: 2  # Number of desired replicas
+  selector:
+    matchLabels:
+      app: typing-champ
+  template:
+    metadata:
+      labels:
+        app: typing-champ
+    spec:
+      containers:
+      - name: typing-champ
+        image: rameshkumarverma/typing-champ
+        ports:
+        - containerPort: 80

@@ -1,0 +1,20 @@
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tindog-deployment
+spec:
+  replicas: 2  # Number of desired replicas
+  selector:
+    matchLabels:
+      app: tindog
+  template:
+    metadata:
+      labels:
+        app: tindog
+    spec:
+      containers:
+      - name: tindog
+        image: rameshkumarverma/tindog
+        ports:
+        - containerPort: 80

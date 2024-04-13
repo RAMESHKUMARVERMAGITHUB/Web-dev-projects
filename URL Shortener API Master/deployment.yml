@@ -1,0 +1,20 @@
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: url-shortener-api-master-deployment
+spec:
+  replicas: 2  # Number of desired replicas
+  selector:
+    matchLabels:
+      app: url-shortener-api-master
+  template:
+    metadata:
+      labels:
+        app: url-shortener-api-master
+    spec:
+      containers:
+      - name: url-shortener-api-master
+        image: rameshkumarverma/url-shortener-api-master
+        ports:
+        - containerPort: 80

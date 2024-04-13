@@ -1,0 +1,20 @@
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: relaxer-app-deployment
+spec:
+  replicas: 2  # Number of desired replicas
+  selector:
+    matchLabels:
+      app: relaxer-app
+  template:
+    metadata:
+      labels:
+        app: relaxer-app
+    spec:
+      containers:
+      - name: relaxer-app
+        image: rameshkumarverma/relaxer-app
+        ports:
+        - containerPort: 80

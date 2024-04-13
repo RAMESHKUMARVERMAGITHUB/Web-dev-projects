@@ -1,0 +1,20 @@
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: to-do-list-deployment
+spec:
+  replicas: 2  # Number of desired replicas
+  selector:
+    matchLabels:
+      app: to-do-list
+  template:
+    metadata:
+      labels:
+        app: to-do-list
+    spec:
+      containers:
+      - name: to-do-list
+        image: rameshkumarverma/to-do-list
+        ports:
+        - containerPort: 80

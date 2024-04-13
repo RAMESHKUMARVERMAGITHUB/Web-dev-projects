@@ -1,0 +1,20 @@
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: survey-form-deployment
+spec:
+  replicas: 2  # Number of desired replicas
+  selector:
+    matchLabels:
+      app: survey-form
+  template:
+    metadata:
+      labels:
+        app: survey-form
+    spec:
+      containers:
+      - name: survey-form
+        image: rameshkumarverma/survey-form
+        ports:
+        - containerPort: 80

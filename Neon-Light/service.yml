@@ -2,13 +2,13 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: neaon-light-service
+  name: neon-light-service
   annotations:
     service.beta.kubernetes.io/aws-load-balancer-type: "alb"
     service.beta.kubernetes.io/aws-load-balancer-backend-protocol: "http"
 spec:
   selector:
-    app: neaon-light
+    app: neon-light
   ports:
     - protocol: TCP
       port: 8081  # Port exposed by the service externally (outside the cluster)

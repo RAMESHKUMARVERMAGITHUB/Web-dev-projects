@@ -1,0 +1,20 @@
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: score-keeper-deployment
+spec:
+  replicas: 2  # Number of desired replicas
+  selector:
+    matchLabels:
+      app: score-keeper
+  template:
+    metadata:
+      labels:
+        app: score-keeper
+    spec:
+      containers:
+      - name: score-keeper
+        image: rameshkumarverma/score-keeper
+        ports:
+        - containerPort: 80

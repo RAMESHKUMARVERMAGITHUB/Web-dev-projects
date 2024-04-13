@@ -2,19 +2,19 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: neaon-light-deployment
+  name: neon-light-deployment
 spec:
   replicas: 2  # Number of desired replicas
   selector:
     matchLabels:
-      app: neaon-light
+      app: neon-light
   template:
     metadata:
       labels:
-        app: neaon-light
+        app: neon-light
     spec:
       containers:
-      - name: neaon-light
-        image: rameshkumarverma/neaon-light
+      - name: neon-light
+        image: rameshkumarverma/neon-light
         ports:
         - containerPort: 80

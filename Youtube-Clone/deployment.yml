@@ -1,0 +1,20 @@
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: youtube-clone-deployment
+spec:
+  replicas: 2  # Number of desired replicas
+  selector:
+    matchLabels:
+      app: youtube-clone
+  template:
+    metadata:
+      labels:
+        app: youtube-clone
+    spec:
+      containers:
+      - name: youtube-clone
+        image: rameshkumarverma/youtube-clone
+        ports:
+        - containerPort: 80

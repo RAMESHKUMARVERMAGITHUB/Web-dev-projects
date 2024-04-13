@@ -1,0 +1,20 @@
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: virtual-keyboard-deployment
+spec:
+  replicas: 2  # Number of desired replicas
+  selector:
+    matchLabels:
+      app: virtual-keyboard
+  template:
+    metadata:
+      labels:
+        app: virtual-keyboard
+    spec:
+      containers:
+      - name: virtual-keyboard
+        image: rameshkumarverma/virtual-keyboard
+        ports:
+        - containerPort: 80

@@ -1,0 +1,20 @@
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: chrome-logo-using-css-deployment
+spec:
+  replicas: 2  # Number of desired replicas
+  selector:
+    matchLabels:
+      app: chrome-logo-using-css
+  template:
+    metadata:
+      labels:
+        app: chrome-logo-using-css
+    spec:
+      containers:
+      - name: chrome-logo-using-css
+        image: rameshkumarverma/chrome-logo-using-css
+        ports:
+        - containerPort: 80

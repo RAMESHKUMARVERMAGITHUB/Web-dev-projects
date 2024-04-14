@@ -1,0 +1,20 @@
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: icoder-deployment
+spec:
+  replicas: 2  # Number of desired replicas
+  selector:
+    matchLabels:
+      app: icoder
+  template:
+    metadata:
+      labels:
+        app: icoder
+    spec:
+      containers:
+      - name: icoder
+        image: rameshkumarverma/icoder
+        ports:
+        - containerPort: 80

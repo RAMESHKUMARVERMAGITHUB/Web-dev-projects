@@ -1,0 +1,20 @@
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: bouncing-balls-deployment
+spec:
+  replicas: 2  # Number of desired replicas
+  selector:
+    matchLabels:
+      app: bouncing-balls
+  template:
+    metadata:
+      labels:
+        app: bouncing-balls
+    spec:
+      containers:
+      - name: bouncing-balls
+        image: rameshkumarverma/bouncing-balls
+        ports:
+        - containerPort: 80
